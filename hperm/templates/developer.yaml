@@ -1,0 +1,43 @@
+{{- range $developer := .Values.accounts.developers }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hperm-sa-developer-{{ $developer.name }}
+  namespace: {{ $.Values.serviceAccountNamespace }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hperm-sa-secret-developer-{{ $developer.name }}
+  namespace: {{ $.Values.serviceAccountNamespace }}
+  annotations:
+    kubernetes.io/service-account.name: hperm-sa-developer-{{ $developer.name }}
+type: kubernetes.io/service-account-token
+---
+{{- range $namespace := $developer.namespaces }}
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: {{ $namespace }}
+  name: hperm-role-developer-{{ $namespace }}-{{ $developer.name }}
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: hperm-rb-developer-{{ $namespace }}-{{ $developer.name }}
+  namespace: {{ $namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: hperm-role-developer-{{ $namespace }}-{{ $developer.name }}
+subjects:
+- kind: ServiceAccount
+  name: hperm-sa-developer-{{ $developer.name }}
+  namespace: {{ $.Values.serviceAccountNamespace }}
+---
+{{- end }}
+{{- end }}

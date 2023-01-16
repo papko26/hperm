@@ -1,0 +1,39 @@
+{{- range $root := .Values.accounts.root }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hperm-sa-root-{{ $root.name }}
+  namespace: {{ $.Values.serviceAccountNamespace }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hperm-sa-secret-root-{{ $root.name }}
+  namespace: {{ $.Values.serviceAccountNamespace }}
+  annotations:
+    kubernetes.io/service-account.name: hperm-sa-root-{{ $root.name }}
+type: kubernetes.io/service-account-token
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: hperm-cr-root-{{ $root.name }}
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: hperm-crb-root-{{ $root.name }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: hperm-cr-root-{{ $root.name }}
+subjects:
+- kind: ServiceAccount
+  name: hperm-sa-root-{{ $root.name }}
+  namespace: {{ $.Values.serviceAccountNamespace }}
+---
+{{- end }}

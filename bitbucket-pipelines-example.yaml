@@ -1,0 +1,19 @@
+pipelines:
+  branches:
+     master:
+      - parallel:
+          - step:
+                name: K8S infra PROD - permissions
+                trigger: manual
+                image:
+                  # https://jira.atlassian.com/browse/BCLOUD-13014
+                  name: your.regist.ry/k8s-toolset
+                  username: $DOCKER_USERNAME
+                  password: $DOCKER_PASSWORD
+                  email: deploy@your_compa.ny
+                script:
+                  - cd hperm
+                  - echo $b64_kubeconfig_from_CI_Envs | base64 -d > /tmp/kubeconfig
+                  - helm upgrade -n hperm --install --wait --values values.yaml --kubeconfig /tmp/kubeconfig hperm .
+                  - cd ../hperm-generator
+                  - bash hperm-generator.sh /tmp/kubeconfig

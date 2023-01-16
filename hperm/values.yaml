@@ -1,0 +1,12 @@
+serviceAccountNamespace: "hperm"
+
+accounts:
+    root:
+      bitbucket.ci:
+        name: "bitbucket.ci"
+    developers:
+      dev.test1:
+        name: "debug.dev"
+        namespaces:
+        - default
+        - monitoring

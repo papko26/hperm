@@ -1,0 +1,6 @@
+apiVersion: v2
+name: hperm
+description: Simple and plain tool to manage users permissions based on SA
+type: application
+version: 0.1.0
+appVersion: "0.0.1"
