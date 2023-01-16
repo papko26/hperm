@@ -76,7 +76,8 @@ Start the pipeline.
 After it finishes, you may want to download your kubeconfig from secet to your local machine
 ```
 #NS_HPERM was set to hperm, and one of users was bitbucket.ci
-kubectl --kubeconfig your-root-kubeconfig.yaml -n hperm get secret bitbucket.ci-kubeconfig -o=jsonpath='{.data}' | jq -r '."bitbucket.ci.kubeconfig"' | base64 -d > bitbucket.ci.kubeconfig
+kubectl --kubeconfig your-root-kubeconfig.yaml -n hperm get secret bitbucket.ci-kubeconfig -o=jsonpath='{.data}' \ 
+| jq -r '."bitbucket.ci.kubeconfig"' | base64 -d > bitbucket.ci.kubeconfig
 
 ```
 
