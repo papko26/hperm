@@ -80,10 +80,10 @@ I just want to share this approach with you, despite it is not mature, to save y
 
 ## Where I am using it (compatible and tested versions):
 
-k8s on Digital Ocean 1.25.4-do.0
-k8s on Digital Ocean 1.24.4-do.0
-Bitbucket-pipelines as CI
-helm3
+* k8s on Digital Ocean 1.25.4-do.0
+* k8s on Digital Ocean 1.24.4-do.0
+* Bitbucket-pipelines as CI
+* helm3
 
 ## TODO:
 - CLUSTER_NAME_HPERM, CA_DATA_HPERM should be populated automatically
